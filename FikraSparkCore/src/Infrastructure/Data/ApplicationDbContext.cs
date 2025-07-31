@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using FikraSparkCore.Application.Common.Interfaces;
+using FikraSparkCore.Domain.Entities;
 using FikraSparkCore.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,4 +16,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
+
+    public DbSet<Idea> Ideas { get; }
 }
