@@ -17,5 +17,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public DbSet<Idea> Ideas { get; }
+    public DbSet<Idea> Ideas { get; set; } = null!;
 }
