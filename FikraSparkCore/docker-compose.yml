@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  fikraspark-api:
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    ports:
+      - "5000:8080"
+    depends_on:
+      - fikraspark-db
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=fikraspark-db;Database=FikraSparkDb;User Id=sa;Password=password123;TrustServerCertificate=True;
+    networks:
+      - fikraspark-network
+
+  fikraspark-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password123
+    ports:
+      - "5434:1433"
+    networks:
+      - fikraspark-network
+
+networks:
+  fikraspark-network:
+    driver: bridge

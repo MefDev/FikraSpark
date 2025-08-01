@@ -1,6 +1,6 @@
 using FikraSparkCore.Application.Ideas.Commands.CreateIdea;
 
-namespace FikraSparkCore.Web.Infrastructure.Endpoints;
+namespace FikraSparkCore.Web.Endpoints;
 
 public static class IdeasEndpoints
 {

@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using FikraSparkCore.Application.Common.Behaviours;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace FikraSparkCore.Application;
 
 public static class DependencyInjection
 {

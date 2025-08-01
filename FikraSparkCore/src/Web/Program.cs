@@ -1,3 +1,5 @@
+using FikraSparkCore.Application;
+using FikraSparkCore.Infrastructure;
 using FikraSparkCore.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
