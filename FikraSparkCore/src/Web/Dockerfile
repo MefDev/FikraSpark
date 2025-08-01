@@ -4,10 +4,10 @@ WORKDIR /src
 
 # Copy everything and restore
 COPY . .
-RUN dotnet restore "./Web/Web.csproj"
+RUN dotnet restore "src/Web/Web.csproj"
 
 # Publish (compile) the application
-RUN dotnet publish "./Web/Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "src/Web/Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Final image: runtime only
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final

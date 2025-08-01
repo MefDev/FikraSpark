@@ -1,6 +1,9 @@
 using FikraSparkCore.Application;
 using FikraSparkCore.Infrastructure;
 using FikraSparkCore.Infrastructure.Data;
+using FikraSparkCore.Infrastructure.Identity;
+using FikraSparkCore.Web.Endpoints;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,10 @@ builder.AddKeyVaultIfConfigured();
 builder.AddApplicationServices();
 builder.AddInfrastructureServices();
 builder.AddWebServices();
+
+
+builder.Services.AddEndpointsApiExplorer();
+
 
 var app = builder.Build();
 
@@ -39,6 +46,8 @@ app.MapFallbackToFile("index.html");
 
 app.UseExceptionHandler(options => { });
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapEndpoints();
 
