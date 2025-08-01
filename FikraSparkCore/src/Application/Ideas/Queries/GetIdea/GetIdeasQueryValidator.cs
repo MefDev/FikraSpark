@@ -1,5 +1,6 @@
+using FikraSparkCore.Application.Ideas.Queries.GetIdeas;
 using FluentValidation;
-namespace FikraSparkCore.Application.Ideas.Queries.GetIdeas;
+namespace FikraSparkCore.Application.Ideas.Queries.GetIdea;
 
 public class GetIdeasQueryValidator : AbstractValidator<GetIdeasQuery>
 {

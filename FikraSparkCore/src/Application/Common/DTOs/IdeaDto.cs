@@ -1,4 +1,4 @@
-namespace FikraSparkCore.Application.Ideas.Queries.GetIdeas;
+namespace FikraSparkCore.Application.Common.DTOs;
 
 public class IdeaDto
 {

@@ -1,6 +1,4 @@
 namespace FikraSparkCore.Application.Ideas.Commands.DeleteIdea;
 
-public class DeleteIdeaCommand
-{
-    
-}
+public record DeleteIdeaCommand(int Id) : IRequest;
+
