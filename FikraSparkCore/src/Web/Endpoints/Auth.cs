@@ -32,7 +32,7 @@ public class Auth : EndpointGroupBase
 
     public async Task<IResult> Register(
         UserManager<ApplicationUser> userManager,
-        RegisterRequest request)
+        Microsoft.AspNetCore.Identity.Data.RegisterRequest request)
     {
         var user = new ApplicationUser
         {

@@ -15,8 +15,168 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+export interface IAuthClient {
+    postApiAuthApiAccountLogin(request: LoginRequest): Observable<void>;
+    postApiAuthApiAccountRegister(request: RegisterRequest): Observable<void>;
+    postApiAuthApiAccountLogout(): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthClient implements IAuthClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    postApiAuthApiAccountLogin(request: LoginRequest): Observable<void> {
+        let url_ = this.baseUrl + "/api/Auth/api/account/login";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiAuthApiAccountLogin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiAuthApiAccountLogin(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiAuthApiAccountLogin(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postApiAuthApiAccountRegister(request: RegisterRequest): Observable<void> {
+        let url_ = this.baseUrl + "/api/Auth/api/account/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiAuthApiAccountRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiAuthApiAccountRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiAuthApiAccountRegister(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postApiAuthApiAccountLogout(): Observable<void> {
+        let url_ = this.baseUrl + "/api/Auth/api/account/logout";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiAuthApiAccountLogout(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiAuthApiAccountLogout(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiAuthApiAccountLogout(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface IIdeasClient {
-    getIdeas(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfIdeaDto>;
+    getIdeas(pageNumber: number | undefined, pageSize: number | undefined, sort: string | null | undefined): Observable<PaginatedListOfIdeaDto>;
     createIdea(command: CreateIdeaCommand): Observable<number>;
     getIdeaById(id: number): Observable<IdeaDto>;
     updateIdea(id: number, command: UpdateIdeaCommand): Observable<void>;
@@ -36,16 +196,18 @@ export class IdeasClient implements IIdeasClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getIdeas(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfIdeaDto> {
+    getIdeas(pageNumber: number | undefined, pageSize: number | undefined, sort: string | null | undefined): Observable<PaginatedListOfIdeaDto> {
         let url_ = this.baseUrl + "/api/Ideas?";
         if (pageNumber === null)
             throw new Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
-            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
         if (pageSize === null)
             throw new Error("The parameter 'pageSize' cannot be null.");
         else if (pageSize !== undefined)
-            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (sort !== undefined && sort !== null)
+            url_ += "Sort=" + encodeURIComponent("" + sort) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -303,6 +465,152 @@ export class IdeasClient implements IIdeasClient {
     }
 }
 
+export interface IVotesClient {
+    postApiVotesVote(command: VoteIdeaCommand): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class VotesClient implements IVotesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    postApiVotesVote(command: VoteIdeaCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Votes/vote";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiVotesVote(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiVotesVote(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiVotesVote(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+export class LoginRequest implements ILoginRequest {
+    email?: string;
+    password?: string;
+
+    constructor(data?: ILoginRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): LoginRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoginRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["password"] = this.password;
+        return data;
+    }
+}
+
+export interface ILoginRequest {
+    email?: string;
+    password?: string;
+}
+
+export class RegisterRequest implements IRegisterRequest {
+    email?: string;
+    password?: string;
+
+    constructor(data?: IRegisterRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): RegisterRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["password"] = this.password;
+        return data;
+    }
+}
+
+export interface IRegisterRequest {
+    email?: string;
+    password?: string;
+}
+
 export class PaginatedListOfIdeaDto implements IPaginatedListOfIdeaDto {
     items?: IdeaDto[];
     pageNumber?: number;
@@ -371,6 +679,7 @@ export class IdeaDto implements IIdeaDto {
     id?: number;
     title?: string;
     description?: string;
+    votes?: number;
 
     constructor(data?: IIdeaDto) {
         if (data) {
@@ -386,6 +695,7 @@ export class IdeaDto implements IIdeaDto {
             this.id = _data["id"];
             this.title = _data["title"];
             this.description = _data["description"];
+            this.votes = _data["votes"];
         }
     }
 
@@ -401,6 +711,7 @@ export class IdeaDto implements IIdeaDto {
         data["id"] = this.id;
         data["title"] = this.title;
         data["description"] = this.description;
+        data["votes"] = this.votes;
         return data;
     }
 }
@@ -409,6 +720,7 @@ export interface IIdeaDto {
     id?: number;
     title?: string;
     description?: string;
+    votes?: number;
 }
 
 export class CreateIdeaCommand implements ICreateIdeaCommand {
@@ -493,6 +805,46 @@ export interface IUpdateIdeaCommand {
     id?: number;
     title?: string;
     description?: string;
+}
+
+export class VoteIdeaCommand implements IVoteIdeaCommand {
+    id?: number;
+    delta?: number;
+
+    constructor(data?: IVoteIdeaCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.delta = _data["delta"];
+        }
+    }
+
+    static fromJS(data: any): VoteIdeaCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new VoteIdeaCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["delta"] = this.delta;
+        return data;
+    }
+}
+
+export interface IVoteIdeaCommand {
+    id?: number;
+    delta?: number;
 }
 
 export class SwaggerException extends Error {
