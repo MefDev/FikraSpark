@@ -18,7 +18,7 @@ public class UpdateIdeaCommandHandler : IRequestHandler<UpdateIdeaCommand>
         if (entity == null)
             throw new KeyNotFoundException($"Idea {request.Id} not found");
 
-        entity.Update(request.Title, request.Description);
+        entity.Update(request.Title, request.Description, entity.Votes);
 
         await _context.SaveChangesAsync(cancellationToken);
     }

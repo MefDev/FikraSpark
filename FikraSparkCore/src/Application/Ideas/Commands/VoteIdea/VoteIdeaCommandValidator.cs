@@ -1,16 +1,17 @@
 using FluentValidation;
-namespace FikraSparkCore.Application.Ideas.Commands.CreateIdea;
 
-public class CreateIdeaCommandValidator: AbstractValidator<CreateIdeaCommand>
+namespace FikraSparkCore.Application.Ideas.Commands.VoteIdea;
+
+public class VoteIdeaCommandValidator : AbstractValidator<VoteIdeaCommand>
 {
-    public CreateIdeaCommandValidator()
+    public VoteIdeaCommandValidator()
     {
-        RuleFor(v => v.Title)
-            .NotEmpty()
-            .MaximumLength(200);
+        RuleFor(v => v.Id)
+            .GreaterThan(0)
+            .WithMessage("Id must be a positive number.");
 
-        RuleFor(v => v.Description)
-            .NotEmpty()
-            .MaximumLength(2000);
+        RuleFor(v => v.Delta)
+            .Must(value => value == 1 || value == -1)
+            .WithMessage("Vote value must be +1 (upvote) or -1 (downvote).");
     }
 }

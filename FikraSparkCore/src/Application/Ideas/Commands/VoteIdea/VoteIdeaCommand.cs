@@ -1,6 +1,3 @@
-namespace FikraSparkCore.Application.Ideas.Commands.CreateIdea;
+namespace FikraSparkCore.Application.Ideas.Commands.VoteIdea;
 
-public record CreateIdeaCommand(string Title, string Description) : IRequest<int>
-{
-    
-}
+public record VoteIdeaCommand(int Id, int Delta) : IRequest;

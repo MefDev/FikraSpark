@@ -16,15 +16,22 @@ public class GetIdeasQueryHandler : IRequestHandler<GetIdeasQuery, PaginatedList
 
     public async Task<PaginatedList<IdeaDto>> Handle(GetIdeasQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Ideas
-            .OrderBy(i => i.Id)
+        var query = _context.Ideas.AsQueryable();
+        
+        query = request.Sort.ToLower() switch
+        {
+            "top" => query.OrderByDescending(i => i.Votes),
+            _ => query.OrderByDescending(i => i.Created)
+        };
+        return await query
             .Select(i => new IdeaDto
             {
                 Id = i.Id,
                 Title = i.Title,
-                Description = i.Description
+                Description = i.Description,
+                Votes = i.Votes
             })
-            .PaginatedListAsync(request.pageNumber, request.pageNumber);
+            .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }
 

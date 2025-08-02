@@ -1,6 +1,6 @@
 namespace FikraSparkCore.Application.Ideas.Commands.CreateIdea;
 
-public record VoteIdeaCommand(string Title, string Description) : IRequest<int>
+public record CreateIdeaCommand(string Title, string Description) : IRequest<int>
 {
     
 }

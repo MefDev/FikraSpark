@@ -15,7 +15,7 @@ public class CreateIdeaCommandHandler : IRequestHandler<CreateIdeaCommand, int>
 
     public async Task<int> Handle(CreateIdeaCommand request, CancellationToken cancellationToken)
     {
-        var entity = new Idea(request.Title, request.Description);
+        var entity = new Idea(request.Title, request.Description, 0);
         
         entity.AddDomainEvent(new IdeaCreatedEvent(entity));
 
