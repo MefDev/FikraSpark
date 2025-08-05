@@ -1,19 +1,22 @@
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+/* Custom styles for navigation component */
+/* Most styling is now handled by Tailwind CSS classes */
+
+/* Custom focus styles for better accessibility */
+.nav-link:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
 }
 
-html {
-  font-size: 14px;
+/* Smooth transitions for mobile menu */
+.navbar-collapse {
+  transition: all 0.3s ease-in-out;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* Custom hover effects */
+.nav-link:hover {
+  @apply text-primary-600;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+/* Active link styling */
+.link-active {
+  @apply text-primary-600 bg-primary-50;
 }

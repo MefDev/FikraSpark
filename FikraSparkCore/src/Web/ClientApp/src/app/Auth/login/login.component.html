@@ -1,0 +1,68 @@
+<app-nav-menu></app-nav-menu>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="max-w-md w-full space-y-6 bg-white p-10 rounded-2xl shadow-2xl border border-gray-200">
+    <div class="text-center">
+      <i class="ph ph-magnet text-yellow-400 text-4xl"></i>
+      <h2 class="mt-4 text-3xl font-extrabold text-gray-900">Welcome Back</h2>
+      <p class="mt-1 text-gray-500">Sign in to your workspace</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <div class="mt-1 relative">
+          <input
+            type="email"
+            formControlName="email"
+            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            placeholder="you@example.com"
+          />
+          <i class="ph ph-envelope-simple absolute right-3 top-2.5 text-gray-400 text-lg"></i>
+        </div>
+      </div>
+
+       <div>
+            <label class="block text-sm font-medium text-gray-700">Password</label>
+            <div class="mt-1 relative">
+            <input
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 pr-10"
+                placeholder="••••••••"
+            />
+            <button
+                type="button"
+                (click)="showPassword = !showPassword"
+                class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                tabindex="-1"
+            >
+                <i
+                class="ph"
+                [ngClass]="showPassword ? 'ph-eye-slash' : 'ph-eye'"
+                ></i>
+            </button>
+            </div>
+        </div>
+
+      <div *ngIf="error" class="text-red-500 text-sm">{{ error }}</div>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-gray-900 bg-yellow-300 hover:bg-yellow-400 focus:outline-none transition-all duration-200"
+      >
+        <i
+          *ngIf="loading"
+          class="ph ph-circle-notch animate-spin text-xl mr-2"
+        ></i>
+        <i *ngIf="!loading" class="ph ph-sign-in text-xl mr-2"></i>
+        <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
+      </button>
+    </form>
+
+    <div class="text-center text-sm text-gray-500">
+      Don’t have an account?
+      <a href="/register" class="text-yellow-500 hover:underline">Create one</a>
+    </div>
+  </div>
+</div>

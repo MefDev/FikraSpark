@@ -1,0 +1,90 @@
+<app-nav-menu></app-nav-menu>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="max-w-md w-full space-y-6 bg-white p-10 rounded-2xl shadow-2xl border border-gray-200">
+    <div class="text-center">
+      <i class="ph ph-user-plus text-yellow-400 text-4xl"></i>
+      <h2 class="mt-4 text-3xl font-extrabold text-gray-900">Create Account</h2>
+      <p class="mt-1 text-gray-500">Join the workspace in seconds</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-6">
+
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <div class="mt-1 relative">
+          <input
+            type="email"
+            formControlName="email"
+            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            placeholder="you@example.com"
+          />
+          <i class="ph ph-envelope-simple absolute right-3 top-3 text-gray-400 text-lg"></i>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
+        <div class="mt-1 relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 pr-10"
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            (click)="showPassword = !showPassword"
+            class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+            tabindex="-1"
+            title="{{ showPassword ? 'Hide password' : 'Show password' }}"
+          >
+            <i class="ph" [ngClass]="showPassword ? 'ph-eye-slash' : 'ph-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+        <div class="mt-1 relative">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 pr-10"
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            (click)="showConfirmPassword = !showConfirmPassword"
+            class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+            tabindex="-1"
+            title="{{ showConfirmPassword ? 'Hide password' : 'Show password' }}"
+          >
+            <i class="ph" [ngClass]="showConfirmPassword ? 'ph-eye-slash' : 'ph-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error" class="text-red-500 text-sm text-center">{{ error }}</div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-gray-900 bg-yellow-300 hover:bg-yellow-400 focus:outline-none transition-all duration-200"
+      >
+        <i *ngIf="loading" class="ph ph-circle-notch animate-spin text-xl mr-2"></i>
+        <i *ngIf="!loading" class="ph ph-user-plus text-xl mr-2"></i>
+        <span>{{ loading ? 'Creating account...' : 'Register' }}</span>
+      </button>
+    </form>
+
+    <div class="text-center text-sm text-gray-500">
+      Already have an account?
+      <a href="/login" class="text-yellow-500 hover:underline">Sign in</a>
+    </div>
+  </div>
+</div>

@@ -14,7 +14,18 @@ export class AuthorizeInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(
+      const token = localStorage.getItem('auth_token');
+      let authReq = req;
+      if (token) {
+        authReq = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
+
+
+    return next.handle(authReq).pipe(
       catchError(error => {
         if (error instanceof HttpErrorResponse && error.url?.startsWith(this.loginUrl)) {
           window.location.href = `${this.loginUrl}?ReturnUrl=${window.location.pathname}`;

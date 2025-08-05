@@ -1,7 +1,6 @@
 # FikraSparkCore.Web
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.8.
-
+## Overview
+FikraSparkCore is a collaborative visual platform for teams to brainstorm, vote, and prioritize ideas using a sticky-note style board. The application combines an Angular frontend with a .NET backend, using SQL Server for data storage
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

@@ -1,0 +1,314 @@
+<div class="min-h-screen miro-background py-12 px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2 font-poppins">Ideas Board</h1>
+      <p class="text-gray-600 font-inter">Capture and organize your creative ideas</p>
+    </div>
+
+    @if(!ideas){
+    <div class="flex justify-center items-center py-12">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"></div>
+        <p class="text-gray-500 font-inter">Loading ideas...</p>
+      </div>
+    </div>
+    }
+    @else {
+    <div class="space-y-6">
+      <!-- Header with Add Button -->
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-900 font-poppins">Your Ideas</h2>
+      </div>
+
+      <!-- Ideas Board -->
+      @if(ideas.length === 0) {
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 font-poppins">No ideas yet</h3>
+        <p class="mt-1 text-sm text-gray-500 font-inter">Get started by creating your first idea.</p>
+      </div>
+       <div class="flex justify-center">
+          <div class="miro-toolbar mb-6 flex items-center justify-center space-x-2 bg-white rounded-md shadow-sm p-1">
+            <button 
+            class="toolbar-btn"
+            title="Select tool"
+            (click)="toggleDrag()"
+            [ngStyle]="{ backgroundColor: dragEnabled ? '#FFD500' : '#fff' }">
+              <i class="ph ph-cursor"></i>
+            </button>
+            <button class="toolbar-btn" title="Sticky note" (click)="showNewIdeaModalHandler()">
+              <i class="ph ph-note"></i>
+            </button>
+           <button class="toolbar-btn" title="Sorting"
+           (click)="toggleSort()"
+           [ngStyle]="{ backgroundColor: sort === 'top' ? '#FFD500' : '#fff' }">
+           <i class="ph" [ngClass]="sort === 'top' ? 'ph-sort-descending' : 'ph-sort-ascending'"></i>
+           </button>
+            <button class="toolbar-btn" title="Shape">
+              <i class="ph ph-square"></i>
+            </button>
+          </div>
+        </div>
+      }
+      @else {
+        <div class="flex justify-center">
+          <div class="miro-toolbar mb-6 flex items-center justify-center space-x-2 bg-white rounded-md shadow-sm p-1">
+            <button 
+            class="toolbar-btn"
+            title="Select tool"
+            (click)="toggleDrag()"
+            [ngStyle]="{ backgroundColor: dragEnabled ? '#FFD500' : '#fff' }">
+              <i class="ph ph-cursor"></i>
+            </button>
+            <button class="toolbar-btn" title="Sticky note" (click)="showNewIdeaModalHandler()">
+              <i class="ph ph-note"></i>
+            </button>
+           <button class="toolbar-btn" title="Sorting"
+           (click)="toggleSort()"
+           [ngStyle]="{ backgroundColor: sort === 'top' ? '#FFD500' : '#fff' }">
+           <i class="ph" [ngClass]="sort === 'top' ? 'ph-sort-descending' : 'ph-sort-ascending'"></i>
+           </button>
+            <button class="toolbar-btn" title="Shape">
+              <i class="ph ph-square"></i>
+            </button>
+          </div>
+        </div>
+       
+      <!--board with sticky notes -->
+      <div 
+      cdkDropList
+      [cdkDropListData]="ideas"
+      (cdkDropListDropped)="drop($event)"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
+        @for (idea of ideas; track idea.id) {
+        <div 
+          @fadeIn
+          class="sticky-note {{ getIdeaColor(idea.id) }} {{ getIdeaRotation(idea.id) }} p-4 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+          cdkDrag
+          [cdkDragDisabled]="!dragEnabled"
+          >
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="text-lg font-medium text-gray-900 line-clamp-2 font-poppins">{{ idea.title }}</h3>
+            <div class="flex space-x-2">
+              <button 
+                class="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                (click)="showEditIdeaModalHandler(idea); $event.stopPropagation();"
+                title="Edit idea">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+              </button>
+              <button 
+                class="text-gray-500 hover:text-red-600 transition-colors duration-200"
+                (click)="showDeleteIdeaModalHandler(idea); $event.stopPropagation();"
+                title="Delete idea">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          @if(idea.description) {
+          <p class="text-gray-700 text-sm line-clamp-3 mb-3 font-inter">{{ idea.description }}</p>
+          }
+          
+          <div class="flex items-center justify-between text-xs text-gray-500 font-inter">
+            <div class="flex items-center space-x-2">
+              <button 
+                class="text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                (click)="upvoteIdea(idea, $event)"
+                title="Upvote">
+                <i class="ph ph-thumbs-up"></i>
+              </button>
+              <span>{{ idea.votes || 0 }}</span>
+              <button 
+                class="text-gray-500 hover:text-red-600 transition-colors duration-200"
+                (click)="downvoteIdea(idea, $event)"
+                title="Downvote">
+                <i class="ph ph-thumbs-down"></i>
+              </button>
+            </div>
+            <span>#{{ idea.id }}</span>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Idea Modal -->
+  @if(showNewIdeaModal) {
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
+      <div 
+        class="relative w-[420px] max-w-full bg-[#fffbe6] border-[3px] border-yellow-400 shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-[24px] px-6 py-6 animate-[bounceIn_0.5s_ease-out]">
+        
+        <!-- Colored Side Bar -->
+        <div class="absolute top-2 left-0 h-[360px] w-1 bg-yellow-400"></div>
+    
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-extrabold text-gray-800 tracking-tight"><i class="ph ph-lightbulb"></i> New Sticky Note</h3>
+          <button (click)="newIdeaCancelled()" class="text-gray-400 hover:text-gray-600 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+    
+        <!-- Body -->
+        <div class="space-y-4">
+          <div>
+            <label for="ideaTitle" class="text-sm font-medium text-gray-700">Title</label>
+            <input 
+              id="ideaTitle"
+              type="text"
+              placeholder="e.g. New Brainstorming Idea"
+              class="w-full px-4 py-2 mt-1 text-gray-800 bg-white border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 placeholder:text-gray-400"
+              [(ngModel)]="newIdeaEditor.title"
+              (keyup.enter)="addIdea()"
+              maxlength="200" />
+          </div>
+    
+          <div>
+            <label for="ideaDescription" class="text-sm font-medium text-gray-700">Description</label>
+            <textarea 
+              id="ideaDescription"
+              rows="4"
+              placeholder="Optional context or action steps..."
+              class="w-full px-4 py-2 mt-1 text-gray-800 bg-white border-2 border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 placeholder:text-gray-400"
+              [(ngModel)]="newIdeaEditor.description"
+              maxlength="1000"></textarea>
+          </div>
+        </div>
+    
+        <!-- Footer -->
+        <div class="mt-6 flex justify-end space-x-3">
+          <button 
+            class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 transition"
+            (click)="newIdeaCancelled()">
+            Cancel
+          </button>
+          <button 
+            class="px-5 py-2 text-sm font-bold text-white bg-yellow-400 hover:bg-yellow-500 rounded-xl shadow-md transition"
+            (click)="addIdea()">
+            <i class="ph ph-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>  
+  }
+
+  <!-- Edit Idea Modal -->
+  @if(showEditIdeaModal) {
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
+      <div 
+        class="relative w-[420px] max-w-full bg-[#fffbe6] border-[3px] border-yellow-400 shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-[24px] px-6 py-6 animate-[bounceIn_0.5s_ease-out]">
+        
+        <!-- Colored Side Bar -->
+        <div class="absolute top-2 left-0 h-[360px] w-1 bg-yellow-400"></div>
+    
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-extrabold text-gray-800 tracking-tight">
+            <i class="ph ph-pencil-simple"></i> Edit Sticky Note
+          </h3>
+          <button (click)="editIdeaCancelled()" class="text-gray-400 hover:text-gray-600 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+    
+        <!-- Body -->
+        <div class="space-y-4">
+          <div>
+            <label for="editIdeaTitle" class="text-sm font-medium text-gray-700">Title</label>
+            <input 
+              id="editIdeaTitle"
+              type="text"
+              placeholder="Update the idea title..."
+              class="w-full px-4 py-2 mt-1 text-gray-800 bg-white border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 placeholder:text-gray-400"
+              [(ngModel)]="ideaEditor.title"
+              (keyup.enter)="updateIdea()"
+              maxlength="200" />
+          </div>
+    
+          <div>
+            <label for="editIdeaDescription" class="text-sm font-medium text-gray-700">Description</label>
+            <textarea 
+              id="editIdeaDescription"
+              rows="4"
+              placeholder="Update context or action steps..."
+              class="w-full px-4 py-2 mt-1 text-gray-800 bg-white border-2 border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 placeholder:text-gray-400"
+              [(ngModel)]="ideaEditor.description"
+              maxlength="1000"></textarea>
+          </div>
+        </div>
+    
+        <!-- Footer -->
+        <div class="mt-6 flex justify-end space-x-3">
+          <button 
+            class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 transition"
+            (click)="editIdeaCancelled()">
+            Cancel
+          </button>
+          <button 
+            class="px-5 py-2 text-sm font-bold text-white bg-yellow-400 hover:bg-yellow-500 rounded-xl shadow-md transition"
+            (click)="updateIdea()">
+            <i class="ph ph-check"></i>
+          </button>
+        </div>
+      </div>
+    </div>    
+  }
+
+  <!-- Delete Confirmation Modal -->
+  @if(showDeleteIdeaModal) {
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
+  <div 
+    class="relative w-[420px] max-w-full bg-[#fffbe6] border-[3px] border-yellow-400 shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-[24px] px-6 py-6 animate-[bounceIn_0.5s_ease-out]">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-extrabold text-gray-800 tracking-tight">
+        <i class="ph ph-trash-simple text-red-500"></i> Delete Idea
+      </h3>
+      <button (click)="deleteIdeaCancelled()" class="text-gray-400 hover:text-gray-600 transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="text-center px-4">
+      <i class="ph ph-warning-circle text-red-400 text-5xl"></i>
+      <h4 class="mt-4 text-lg font-semibold text-gray-900">Delete Confirmation</h4>
+      <p class="mt-2 text-sm text-gray-600">
+        Are you sure you want to delete <strong>"{{ selectedIdea?.title }}"</strong>?<br/>
+        This action cannot be undone.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-6 flex justify-end space-x-3">
+      <button 
+        class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 transition"
+        (click)="deleteIdeaCancelled()">
+        Cancel
+      </button>
+      <button 
+        class="px-5 py-2 text-sm font-bold text-white bg-red-500 hover:bg-red-600 rounded-xl shadow-md transition"
+        (click)="deleteIdeaConfirmed()">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+  }
+</div>

@@ -1,14 +1,224 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+   <div class="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 p-4">
+      
+    <app-nav-menu></app-nav-menu>
+
+      <!-- Hero Section -->
+      <section class="pt-24 pb-16 px-6 pr-2">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+              <div class="space-y-6">
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                  Take ideas from 
+                  <span class="text-yellow-500">better to best</span>
+                </h1>
+                <p class="text-xl text-gray-600 leading-relaxed max-w-xl">
+                  Spark ideas. Vote on what matters. FikraSpark turns sticky notes into action with a collaborative board for brainstorming, feedback, and innovation.
+                </p>
+              </div>
+              
+              <div class="flex justify-center">
+                <div class="flex flex-col sm:flex-row gap-4">
+                  <button class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg transition-all duration-200 hover:scale-105 hover:shadow-xl flex items-center justify-center">
+                    <a href="/register" class="text-black visited:text-gray-800 hover:text-gray-800">Get started free</a>
+                    <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+             
+              
+             
+            </div>
+            
+            <!-- Interactive Canvas Preview -->
+            <div class="relative">
+              <div class="bg-white rounded-2xl shadow-2xl p-8 relative overflow-hidden min-h-[500px]" 
+                   (mousemove)="onMouseMove($event)">
+                
+                <!-- Background Grid -->
+                <div class="absolute inset-0 opacity-10">
+                  <div class="grid grid-cols-12 gap-4 h-full">
+                    <div *ngFor="let item of [].constructor(144)" class="border border-gray-300"></div>
+                  </div>
+                </div>
+                
+                <!-- Floating Sticky Notes -->
+                
+                <!-- Mind Map -->
+                <div class="hero-visual">
+                  <div class="canvas-preview">
+                    <div class="floating-elements">
+                      <div class="element sticky-note" [style.transform]="'translate(' + mouseX * 0.02 + 'px, ' + mouseY * 0.02 + 'px)'">
+                        <div class="sticky-content"><i class="ph ph-lightbulb"></i>Ideas</div>
+                      </div>
+                      <div class="element diagram-box" [style.transform]="'translate(' + mouseX * -0.015 + 'px, ' + mouseY * 0.025 + 'px)'">
+                        <div class="diagram-content">
+                          <div class="diagram-node"></div>
+                          <div class="diagram-line"></div>
+                          <div class="diagram-node"></div>
+                        </div>
+                      </div>
+                      <div class="element chart-element" [style.transform]="'translate(' + mouseX * 0.03 + 'px, ' + mouseY * -0.02 + 'px)'">
+                        <div class="chart-bars">
+                          <div class="bar" style="height: 60%"></div>
+                          <div class="bar" style="height: 80%"></div>
+                          <div class="bar" style="height: 40%"></div>
+                        </div>
+                      </div>
+                      <div class="element avatar-group" [style.transform]="'translate(' + mouseX * -0.025 + 'px, ' + mouseY * -0.015 + 'px)'">
+                        <div class="avatar" style="background: linear-gradient(45deg, #ff6b6b, #feca57)"></div>
+                        <div class="avatar" style="background: linear-gradient(45deg, #48dbfb, #0abde3)"></div>
+                        <div class="avatar" style="background: linear-gradient(45deg, #ff9ff3, #f368e0)"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Built for how your team thinks
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+              Capture ideas, vote on priorities, and filter the noise — all on a shared, visual board.
+            </p>
+          </div>
+          
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div *ngFor="let feature of features" 
+                 class="group p-8 rounded-2xl border border-gray-200 hover:border-yellow-400 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                 (mouseenter)="onFeatureHover(feature)">
+              <div class="w-16 h-16 bg-yellow-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 transition-colors duration-300">
+                <div [innerHTML]="feature.icon" class="text-yellow-600 group-hover:text-gray-900 transition-colors duration-300"></div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">{{ feature.title }}</h3>
+              <p class="text-gray-600 leading-relaxed">{{ feature.description }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="py-16 bg-gray-900 mt-24 rounded-lg">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div *ngFor="let stat of stats" class="space-y-2">
+              <div class="text-4xl lg:text-5xl font-bold text-yellow-400">{{ stat.number }}</div>
+              <div class="text-gray-300 text-lg">{{ stat.label }}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="py-20 bg-yellow-50">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-6">Trusted by teams worldwide</h2>
+          </div>
+          
+          <div class="grid md:grid-cols-3 gap-8">
+            <div *ngFor="let testimonial of testimonials" 
+                 class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mr-4">
+                  <span class="text-xl">{{ testimonial.avatar }}</span>
+                </div>
+                <div>
+                  <div class="font-bold text-gray-900">{{ testimonial.name }}</div>
+                  <div class="text-gray-600 text-sm">{{ testimonial.role }}</div>
+                </div>
+              </div>
+              <p class="text-gray-700 italic leading-relaxed">"{{ testimonial.quote }}"</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="py-20 bg-gradient-to-r from-yellow-400 to-orange-500">
+        <div class="max-w-4xl mx-auto text-center px-6">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            Ready to build the next big thing?
+          </h2>
+          <p class="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
+            Be among the first to shape how teams brainstorm, vote, and align—together, visually.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button class="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-200 hover:scale-105 hover:shadow-xl">
+             <a href="/register" class="text-black visited:text-gray-800 hover:text-gray-800">Get started for free</a>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+            <div class="lg:col-span-2">
+              <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-gray-900" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="8" cy="8" r="3"/>
+                    <circle cx="16" cy="8" r="3"/>
+                    <circle cx="8" cy="16" r="3"/>
+                    <circle cx="16" cy="16" r="3"/>
+                    <path d="M8 11h8M11 8v8M13 8v8M8 13h8"/>
+                  </svg>
+                </div>
+                <span class="text-2xl font-bold">FikraSpark</span>
+              </div>
+              <p class="text-gray-400 leading-relaxed max-w-md">
+                The visual collaboration platform for teams that build the future.
+              </p>
+            </div>
+            
+            <div class="space-y-4">
+              <h4 class="font-bold text-white">Product</h4>
+              <div class="space-y-2">
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Features</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Templates</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Integrations</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Security</a>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <h4 class="font-bold text-white">Solutions</h4>
+              <div class="space-y-2">
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Brainstorming</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Diagramming</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Workshops</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Strategic Planning</a>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <h4 class="font-bold text-white">Company</h4>
+              <div class="space-y-2">
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">About</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Careers</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">News</a>
+                <a href="#" class="block text-gray-400 hover:text-white transition-colors">Contact</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+            <p>&copy; 2025 FikraSpark. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>

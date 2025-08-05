@@ -53,6 +53,16 @@
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
   </Target>
 
+  <Target Name="NpmInstallClientApp" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(MSBuildProjectDirectory)\ClientApp\node_modules') ">
+    <Message Importance="high" Text="Running npm install in ClientApp..." />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)\ClientApp" Command="npm install" />
+  </Target>
+  
+  <Target Name="DockerComposeUp" BeforeTargets="Run" Condition=" '$(Configuration)' == 'Debug' ">
+  <Message Importance="high" Text="Starting Docker Compose..." />
+  <Exec WorkingDirectory="$(SolutionDir)" Command="docker-compose up -d" />
+</Target>
+
   <!-- Auto-generated Open API specification and Angular TypeScript clients -->
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>

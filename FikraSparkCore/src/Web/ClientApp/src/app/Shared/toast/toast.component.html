@@ -1,0 +1,15 @@
+<div *ngIf="toast"
+     class="fixed top-24 right-8 max-w-xs w-full px-6 py-4 rounded-md shadow-lg text-white flex items-center space-x-3
+            transition-opacity duration-300"
+     [ngClass]="{
+       'bg-green-500': toast.type === 'success',
+       'bg-red-500': toast.type === 'error',
+       'bg-blue-500': toast.type === 'info',
+       'bg-yellow-400': toast.type === 'warning'
+     }">
+  <i [ngClass]="getIconClass(toast.type)" class="w-6 h-6 flex-shrink-0"></i>
+
+  <div class="flex-1">{{ toast.message }}</div>
+
+  <button aria-label="Close" (click)="toast = null" class="focus:outline-none hover:text-gray-200">✕</button>
+</div>
