@@ -30,7 +30,6 @@ export class LoginComponent{
     const request = new LoginRequest(this.loginForm.value);
     this.authClient.postApiAuthApiAccountLogin(request).subscribe({
       next: (resp) => {
-        console.log(resp)
         this.setToken(resp);
         this.toastService.show('Login successful!', 'success'),
         this.router.navigate(['/idea']);
@@ -45,7 +44,6 @@ export class LoginComponent{
 
   setToken(resp: any): void {
   const token = resp?.token;
-  console.log(token)
   if (token) {
     localStorage.setItem('auth_token', token);
   } else {
