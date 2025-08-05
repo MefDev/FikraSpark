@@ -1,71 +1,109 @@
-﻿# FikraSparkCore
+﻿# FikraSparkCore Application README
 
-The project was generated using the [Clean.Architecture.Solution.Template](https://github.com/jasontaylordev/CleanArchitecture) version 9.0.12.
+## Overview
+FikraSparkCore is a collaborative visual platform for teams to brainstorm, vote, and prioritize ideas using a sticky-note style board. The application combines an Angular frontend with a .NET backend, using SQL Server for data storage.
 
-## Build
+## Technologies Used
+- Angular 18.2.x
+- .NET Core
+- SQL Server 2022
+- TailwindCSS 3.4.x for styling
+- Nunit, Karma and Jasmine for unit testing
+- Docker and Docker Compose for containerization
+## Prerequisites
+- Docker and Docker Compose
+- Node.js and npm
+- .NET SDK
 
-Run `dotnet build -tl` to build the solution.
+## Running with Docker Compose
+1. Clone the repository and navigate to the root directory containing docker-compose.yml
+2. Start the application stack:
+```
+docker-compose up --build
+```
+This will start:
 
-## Run
+- SQL Server database on port 5434
+- Backend API on port 5000
 
-To run the web application:
+## Frontend Development Setup
+1. Navigate to the frontend directory:
+```
+cd src/Web/ClientApp
+```
+2. Install dependencies:
+```
+npm install
+```
+3. Start the development server:
+```
+npm start
+```
+The application will be available at https://localhost:44447
 
-```bash
-cd .\src\Web\
-dotnet watch run
+## Running Tests
+
+### Backend Unit Tests
+1. Navigate to the backend directory:
+```
+cd tests/Application.UnitTests
+```
+2. Then run the tests
+ Nunit testing framework
+
+### Frontend Unit Tests
+1. Navigate to the frontend directory:
+```
+cd src/Web/ClientApp
+```
+2. 1.
+   Run the test suite:
+```
+ Jasmine testing framework
+- Chrome browser for test execution
+- Coverage reporting enabled
+npm test
+```
+This will start Karma test runner and execute all tests with the following setup:
+
+- Jasmine testing framework
+- Chrome browser for test execution
+- Coverage reporting enabled
+
+## Environment Variables
+
+### Backend (API)
+- ASPNETCORE_URLS : HTTP endpoint configuration
+- ConnectionStrings__DefaultConnection : Database connection string
+
+### Database
+- Default port: 5434
+- Default credentials:
+  - User: sa
+  - Password: Password123@KL@
+## Project Structure
+```
+src/
+├── Web/                 # Web API and Frontend
+│   ├── ClientApp/       # Angular frontend application
+│   └── Dockerfile       # API Dockerfile
+├── Application/         # Application logic
+├── Domain/             # Domain models and logic
+└── Infrastructure/    
 ```
 
-Navigate to https://localhost:5001. The application will automatically reload if you change any of the source files.
+## Development Scripts
+Available npm scripts in the frontend project:
 
-## Code Styles & Formatting
+- npm start : Start the development server with HTTPS
+- npm run build : Build the production version
+- npm run watch : Build and watch for changes
+- npm test : Run unit tests
 
-The template includes [EditorConfig](https://editorconfig.org/) support to help maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The **.editorconfig** file defines the coding styles applicable to this solution.
+## Troubleshooting
+If you encounter issues:
 
-## Code Scaffolding
-
-The template includes support to scaffold new commands and queries.
-
-Start in the `.\src\Application\` folder.
-
-Create a new command:
-
-```
-dotnet new ca-usecase --name CreateTodoList --feature-name TodoLists --usecase-type command --return-type int
-```
-
-Create a new query:
-
-```
-dotnet new ca-usecase -n GetTodos -fn TodoLists -ut query -rt TodosVm
-```
-
-If you encounter the error *"No templates or subcommands found matching: 'ca-usecase'."*, install the template and try again:
-
-```bash
-dotnet new install Clean.Architecture.Solution.Template::9.0.12
-```
-
-## Test
-
-The solution contains unit, integration, functional, and acceptance tests.
-
-To run the unit, integration, and functional tests (excluding acceptance tests):
-```bash
-dotnet test --filter "FullyQualifiedName!~AcceptanceTests"
-```
-
-To run the acceptance tests, first start the application:
-
-```bash
-cd .\src\Web\
-dotnet run
-```
-
-Then, in a new console, run the tests:
-```bash
-cd .\src\Web\
-dotnet test
-```
-
-## Help
-To learn more about the template go to the [project website](https://github.com/jasontaylordev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug, and discuss the template with other users.
+1. Ensure Docker is running
+2. Check if ports 5000 and 5434 are available
+3. For frontend development, ensure Node.js and npm are installed
+4. Verify that the ASP.NET Core development certificate is trusted
