@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IAuthClient {
-    postApiAuthApiAccountLogin(request: LoginRequest): Observable<void>;
+    postApiAuthApiAccountLogin(request: LoginRequest): Observable<AuthResponse>;
     postApiAuthApiAccountRegister(request: RegisterRequest): Observable<void>;
     postApiAuthApiAccountLogout(): Observable<void>;
 }
@@ -34,7 +34,7 @@ export class AuthClient implements IAuthClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    postApiAuthApiAccountLogin(request: LoginRequest): Observable<void> {
+    postApiAuthApiAccountLogin(request: LoginRequest): Observable<AuthResponse> {
         let url_ = this.baseUrl + "/api/Auth/api/account/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -46,6 +46,7 @@ export class AuthClient implements IAuthClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -56,14 +57,14 @@ export class AuthClient implements IAuthClient {
                 try {
                     return this.processPostApiAuthApiAccountLogin(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<AuthResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<AuthResponse>;
         }));
     }
 
-    protected processPostApiAuthApiAccountLogin(response: HttpResponseBase): Observable<void> {
+    protected processPostApiAuthApiAccountLogin(response: HttpResponseBase): Observable<AuthResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -72,7 +73,17 @@ export class AuthClient implements IAuthClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = AuthResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -529,6 +540,50 @@ export class VotesClient implements IVotesClient {
         }
         return _observableOf(null as any);
     }
+}
+
+export class AuthResponse implements IAuthResponse {
+    success?: boolean;
+    message?: string;
+    token?: string | undefined;
+
+    constructor(data?: IAuthResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"];
+            this.message = _data["message"];
+            this.token = _data["token"];
+        }
+    }
+
+    static fromJS(data: any): AuthResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuthResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success;
+        data["message"] = this.message;
+        data["token"] = this.token;
+        return data;
+    }
+}
+
+export interface IAuthResponse {
+    success?: boolean;
+    message?: string;
+    token?: string | undefined;
 }
 
 export class LoginRequest implements ILoginRequest {

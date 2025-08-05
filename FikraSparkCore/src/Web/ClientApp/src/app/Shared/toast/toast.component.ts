@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-toast',
   templateUrl: './toast.component.html',
-  styleUrl: './toast.component.css'
+  styleUrl: './toast.component.scss'
 })
 export class ToastComponent implements OnInit, OnDestroy {
  toast: Toast | null = null;

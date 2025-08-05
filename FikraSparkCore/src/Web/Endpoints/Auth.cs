@@ -12,7 +12,10 @@ public class Auth : EndpointGroupBase
 {
     public override void Map(RouteGroupBuilder group)
     {
-        group.MapPost("/api/account/login", Login);
+        group.MapPost("/api/account/login", Login)
+           .WithOpenApi()
+           .Produces<AuthResponse>(StatusCodes.Status200OK)
+           .Produces<AuthResponse>(StatusCodes.Status400BadRequest);
         group.MapPost("/api/account/register", Register);
         group.MapPost("/api/account/logout", Logout);
     }
